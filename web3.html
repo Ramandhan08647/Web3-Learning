@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Web3 - Quiz Adventure</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #349e92dd; }
+        .container { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; }
+        .section, .quiz { display: none; }
+        .active { display: block; }
+        .question { margin: 20px 0; }
+        button { background: #007bff; color: rgba(230, 244, 79, 0.856); border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .options button { display: block; width: 100%; margin: 5px 0; }
+        .next-btn { margin-top: 20px; display: block; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="landing" class="active">
+        <h1>Welcome to Web3 Basics</h1>
+        <p>Let's learn about Blockchain, Wallets, and Transactions — in a simple and fun way!</p>
+        <button onclick="startLearning()">Start Learning</button>
+    </div>
+
+    <div id="section1" class="section">
+        <h2>What is Blockchain?</h2>
+        <p>Blockchain is like a public notebook that everyone can see and write on. It records transactions in a secure, unchangeable way.</p>
+        <button onclick="startQuiz('quiz1')">Take Quiz</button>
+    </div>
+
+    <div id="quiz1" class="quiz">
+        <h2>Quiz: Blockchain</h2>
+        <div class="question" id="q1"></div>
+        <div class="options" id="options1"></div>
+    </div>
+
+    <div id="section2" class="section">
+        <h2>What is a Wallet?</h2>
+        <p>A Wallet is like a digital purse where you keep your cryptocurrencies safely. It helps you send and receive money on the blockchain.</p>
+        <button onclick="startQuiz('quiz2')">Take Quiz</button>
+    </div>
+
+    <div id="quiz2" class="quiz">
+        <h2>Quiz: Wallets</h2>
+        <div class="question" id="q2"></div>
+        <div class="options" id="options2"></div>
+    </div>
+
+    <div id="section3" class="section">
+        <h2>How do Transactions Work?</h2>
+        <p>A transaction is when you send something (like money) from one person to another using blockchain. Everyone can see it, and once added, it can't be changed!</p>
+        <button onclick="startQuiz('quiz3')">Take Quiz</button>
+    </div>
+
+    <div id="quiz3" class="quiz">
+        <h2>Quiz: Transactions</h2>
+        <div class="question" id="q3"></div>
+        <div class="options" id="options3"></div>
+    </div>
+
+    <div id="finish" class="section">
+        <h2>Congratulations!</h2>
+        <p>You have completed the Web3 Basics course 🎉</p>
+    </div>
+</div>
+
+<script>
+let currentQuiz = '';
+let currentQuestion = 0;
+
+const quizzes = {
+    quiz1: [
+        {q: "What is blockchain like?", options: ["A diary", "A public notebook", "A private message", "An email"], answer: 1},
+        {q: "Is blockchain secure?", options: ["Yes", "No"], answer: 0},
+        {q: "Can you easily change records on blockchain?", options: ["Yes", "No"], answer: 1}
+    ],
+    quiz2: [
+        {q: "What does a wallet store?", options: ["Photos", "Cryptocurrencies", "Emails", "Passwords"], answer: 1},
+        {q: "Can you receive crypto without a wallet?", options: ["Yes", "No"], answer: 1},
+        {q: "Is a wallet physical?", options: ["Yes", "No"], answer: 1}
+    ],
+    quiz3: [
+        {q: "What is a transaction?", options: ["Sending money", "Sending an email", "Saving a photo"], answer: 0},
+        {q: "Can transactions be erased?", options: ["Yes", "No"], answer: 1},
+        {q: "Who can see transactions on blockchain?", options: ["Everyone", "Only banks", "Only friends"], answer: 0}
+    ]
+};
+
+function startLearning() {
+    document.getElementById('landing').classList.remove('active');
+    document.getElementById('section1').classList.add('active');
+}
+
+function startQuiz(quizId) {
+    currentQuiz = quizId;
+    currentQuestion = 0;
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.quiz').forEach(q => q.classList.remove('active'));
+    document.getElementById(quizId).classList.add('active');
+    showQuestion();
+}
+
+function showQuestion() {
+    const quiz = quizzes[currentQuiz];
+    if (currentQuestion >= quiz.length) {
+        nextSection();
+        return;
+    }
+    const qEl = document.getElementById('q' + currentQuiz.slice(-1));
+    const optionsEl = document.getElementById('options' + currentQuiz.slice(-1));
+    qEl.innerText = quiz[currentQuestion].q;
+    optionsEl.innerHTML = '';
+    quiz[currentQuestion].options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(idx);
+        optionsEl.appendChild(btn);
+    });
+}
+
+function checkAnswer(selected) {
+    const quiz = quizzes[currentQuiz];
+    if (selected === quiz[currentQuestion].answer) {
+        alert('Correct! 🎉');
+    } else {
+        alert('Oops, wrong answer! 😬');
+    }
+    currentQuestion++;
+    showQuestion();
+}
+
+function nextSection() {
+    if (currentQuiz === 'quiz1') {
+        document.getElementById('quiz1').classList.remove('active');
+        document.getElementById('section2').classList.add('active');
+    } else if (currentQuiz === 'quiz2') {
+        document.getElementById('quiz2').classList.remove('active');
+        document.getElementById('section3').classList.add('active');
+    } else if (currentQuiz === 'quiz3') {
+        document.getElementById('quiz3').classList.remove('active');
+        document.getElementById('finish').classList.add('active');
+    }
+}
+</script>
+
+</body>
+</html>
